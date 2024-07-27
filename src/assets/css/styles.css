@@ -1,0 +1,254 @@
+:root {
+  --neon-blue: #00FFFF;
+  --dark-gray: #2C2C2C;
+  --text-light: #FFFFFF;
+  --text-dark: #000000;
+  --bg-light: #F5F5F5;
+  --bg-dark: #1E1E1E;
+}
+
+/* Container Classes */
+.container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* Flexbox Classes */
+.flex {
+  display: flex;
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-center {
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-space-between {
+  justify-content: space-between;
+}
+
+.flex-space-around {
+  justify-content: space-around;
+}
+
+/* Grid Classes */
+.grid {
+  display: grid;
+}
+
+.grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* Text Alignment Classes */
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.ts-larger{
+  font-size: larger;
+}
+.fb-500{
+  font-weight:500;
+}
+/* Padding Classes */
+.p-1 {
+  padding: 0.25rem;
+}
+
+.p-2 {
+  padding: 0.5rem;
+}
+
+.p-3 {
+  padding: 0.75rem;
+}
+
+.p-4 {
+  padding: 1rem;
+}
+
+.p-5 {
+  padding: 1.25rem;
+}
+
+/* Margin Classes */
+.m-1 {
+  margin: 0.25rem;
+}
+
+.m-2 {
+  margin: 0.5rem;
+}
+
+.m-3 {
+  margin: 0.75rem;
+}
+
+.m-4 {
+  margin: 1rem;
+}
+
+.m-5 {
+  margin: 1.25rem;
+}
+
+/* Background Color Classes */
+.bg-dark {
+  background-color: var(--dark-gray);
+}
+
+.bg-light {
+  background-color: var(--bg-light);
+}
+
+.bg-neon {
+  background-color: var(--neon-blue);
+}
+
+.bg-image{
+  background-image: url('../images/bg.jpg');
+  background-size: cover; /* Ensure the image covers the whole area */
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Prevent the image from repeating */
+}
+
+/* Text Color Classes */
+.text-light {
+  color: var(--text-light);
+}
+
+
+.text-dark {
+  color: var(--text-dark);
+}
+
+.text-neon {
+  color: var(--neon-blue);
+}
+
+/* Border Classes */
+.border {
+  border: 1px solid;
+}
+
+.border-dark {
+  border-color: var(--dark-gray);
+}
+
+.border-neon {
+  border-color: var(--neon-blue);
+}
+
+/* Border Radius Classes */
+.rounded {
+  border-radius: 0.25rem;
+}
+
+.rounded-full {
+  border-radius: 50%;
+}
+
+/* Width and Height Classes */
+.w-full {
+  width: 100%;
+}
+
+.h-full {
+  height: 100%;
+}
+
+.h-75{
+  height: 75vh;
+}
+
+.h-15{
+  height: 15vh;
+}
+
+.h-10{
+  height: 10vh;
+}
+
+.w-screen {
+  width: 100vw;
+}
+
+.h-screen {
+  height: 100vh;
+}
+
+/* Shadow Classes */
+.shadow {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.shadow-neon {
+  box-shadow: 0 4px 8px var(--neon-blue);
+}
+
+/* Custom Classes for Code Editor */
+.editor {
+  background-color: var(--dark-gray);
+  color: var(--text-light);
+  font-family: 'Courier New', Courier, monospace;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+.editor-line {
+  display: block;
+  padding: 0.5rem;
+  border-bottom: 1px solid var(--bg-light);
+}
+
+.editor-keyword {
+  color: var(--neon-blue);
+  font-weight: bold;
+}
+
+.editor-string {
+  color: #FFD700; /* Gold color for strings */
+}
+
+.nav-button {
+  display: inline-block;
+  color: var(--text-light);
+  background-color: var(--dark-gray);
+  padding: 0.5rem 1rem;
+  margin: 0.5rem;
+  border-radius: 0.25rem;
+  text-decoration: none;
+  transition: background-color 0.3s, color 0.3s, transform 0.3s;
+}
+
+.nav-button:hover {
+  background-color: var(--neon-blue);
+  color: var(--text-dark);
+  transform: translateY(-2px);
+}
