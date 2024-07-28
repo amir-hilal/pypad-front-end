@@ -1,15 +1,18 @@
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "../../assets/css/styles.css"
-import React, { useState, useEffect,useRef } from "react";
-import { authRemote } from "../../services/AuthService";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import "../../assets/css/styles.css";
 import { authLocal } from "../../services/AuthLocalService";
-
+import { authRemote } from "../../services/AuthService";
+import { ClipLoader } from 'react-spinners';
 
 function Register() {
 
     const errorRef = useRef();
 
     const navigate = useNavigate()
+    const [loading, setLoading] = useState(false);
 
     const [f_nameFlag, setF_nameFlag] = useState(false);
     const [l_nameFlag, setL_nameFlag] = useState(false);
@@ -94,21 +97,29 @@ function Register() {
     },[email])
 
 
-    const loginHandler = async () =>{
+    const loginHandler = async () => {
+        setLoading(true);
+
         try {
-            if(passwordConfFlag && passwordFlag && usernameFlag && l_nameFlag && f_nameFlag && emailFlag){
-                const data = await authRemote.regester(fname,lname,username,email,password,passwordConf)
+            if (passwordConfFlag && passwordFlag && usernameFlag && l_nameFlag && f_nameFlag && emailFlag) {
+                const data = await authRemote.regester(fname, lname, username, email, password, passwordConf)
                 console.log(data);
-                if(data.status = 201){
-                    navigate("/email")
+                if (data.status = 201) {
+                    navigate("/verify")
                     authLocal.saveEmail(email)
                     authLocal.saveUsername(username)
                 }
+            } else {
+                toast.error("All Fields are required")
             }
         } catch (error) {
             // console.log(error);
+      toast.error(error.response.data.email ? error.response.data.email[0] : error.response.data.username[0]);
+
             errorRef.current.innerHTML = error.response.data.email ? error.response.data.email[0] : error.response.data.username[0];
-        }
+        }finally {
+            setLoading(false);
+          };
 
     }
 
@@ -162,14 +173,16 @@ function Register() {
         {/* <h3>I accept all terms & condition</h3> */}
       </div>
       <div className="input-box button">
-        <input value="Register Now" type="button"
-        onClick={loginHandler}
-        />
+      <button type="button" onClick={loginHandler} disabled={loading} className="wide-button">
+            {loading ? <ClipLoader size={17} color="#000000" /> : "Sign Up"}
+        </button>
       </div>
       <div className="text">
         <h3>Already have an account? <Link to="/login">Login now</Link></h3>
       </div>
-    </form>
+          </form>
+      <ToastContainer />
+
   </div>
   )
 }

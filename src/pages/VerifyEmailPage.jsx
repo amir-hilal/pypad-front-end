@@ -4,7 +4,9 @@ import VerifyEmail from '../components/Auth/VerifyEmail';
 
 const VerifyEmailPage = () => {
     return (
-        <VerifyEmail/>
+        <div className=" flex h-75 flex-center p-5 bg-image">
+            <VerifyEmail />
+      </div>
     );
 };
 export default VerifyEmailPage;

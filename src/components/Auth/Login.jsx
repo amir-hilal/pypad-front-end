@@ -1,40 +1,54 @@
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { ClipLoader } from 'react-spinners';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { authLocal } from "../../services/AuthLocalService";
 import { authRemote } from "../../services/AuthService";
+import { login } from "../../slices/authSlices";
 
 function Login() {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [usernameOrEmail, setUsernameOrEmail] = useState("");
     // const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
 
 
     const errorRef = useRef();
 
-    const loginHandler = async() => {
+  const loginHandler = async () => {
+    setLoading(true);
 
-        try {
+    try {
 
-            const response = await authRemote.login(usernameOrEmail,password)
-            console.log(response);
-            if(response.status === 200){
-                navigate("/")
-            }
-            authLocal.saveToken(response.authorisation.token)
-            authLocal.saveEmail(response.data.user.email)
-            authLocal.saveUsername(response.data.user.username)
-        } catch (error) {
-            console.log(error.response.data.message);
-            errorRef.current.innerHTML = error.response.data.message
-        }
-    }
+      const response = await authRemote.login(usernameOrEmail, password)
+      console.log(response);
+      if (response.status === 200) {
+        dispatch(login({ token: response.authorisation.token, user: response.data.user }));
+        authLocal.saveToken(response.authorisation.token)
+        authLocal.saveEmail(response.data.user.email)
+        authLocal.saveUsername(response.data.user.username)
+        navigate("/")
+        toast.success("Logged in successfully!");
+      }
+    } catch (error) {
+      console.log(error.response.data.message);
+      // errorRef.current.innerHTML = error.response.data.message;
+      toast.error("Login failed. Please check your credentials.");
+
+    } finally {
+      setLoading(false);
+    };
+  };
 
   return (
     <div className="wrapper">
-    <h2>Login Form</h2>
-    <form action="#">
+      <h2>Login Form</h2>
+      <form action="#">
       <div className="input-box">
         <input type="text" placeholder="Enter your username or email" required
         onChange={(e)=>{
@@ -54,14 +68,16 @@ function Login() {
         {/* <h3>I accept all terms & condition</h3> */}
       </div>
       <div className="input-box button">
-        <input value="Login" type="button"
-        onClick={loginHandler}
-        />
+        <button type="button" onClick={loginHandler} disabled={loading} className="wide-button">
+            {loading ? <ClipLoader size={17} color="#000000" /> : "Login"}
+        </button>
       </div>
       <div className="text">
         <h3>Not a member? <Link to="/signup">Signup now</Link></h3>
       </div>
-    </form>
+      </form>
+      <ToastContainer />
+
   </div>
   )
 }
