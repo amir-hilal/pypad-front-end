@@ -60,7 +60,7 @@ const CodeEditor = () => {
       <div className="file-name-input">
           <label htmlFor="file-name"
           onClick={() => showFileNameInput?setShowFileNameInput(false):setShowFileNameInput(true) }
-          >{showFileNameInput ? "File Name:" : "Untitled.py"}</label>
+          >{showFileNameInput ? "File Name:" : fileName}</label>
           {showFileNameInput && (
             <input
               type="text"
