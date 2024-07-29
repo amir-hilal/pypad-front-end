@@ -38,7 +38,7 @@ function Register() {
     }
 
     const validatePassword = () => {
-        if (password.trim() !== "" && password.length >= 8)
+        if (password.trim() !== "" && password.length >= 6)
             setPasswordFlag(true)
         else
             setPasswordFlag(false)
@@ -101,6 +101,8 @@ function Register() {
         setLoading(true);
 
         try {
+            // console.log(passwordConfFlag,passwordConfFlag, usernameFlag, l_nameFlag, f_nameFlag,emailFlag)
+            console.log(fname,lname,username,email,password,passwordConf)
             if (passwordConfFlag && passwordFlag && usernameFlag && l_nameFlag && f_nameFlag && emailFlag) {
                 const data = await authRemote.regester(fname, lname, username, email, password, passwordConf)
                 console.log(data);

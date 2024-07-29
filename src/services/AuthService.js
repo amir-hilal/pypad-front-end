@@ -1,7 +1,7 @@
 import axios from "axios"
 
 export const authRemote = {
-    regester: async (fname,lname,username,email,password,passwordConf) => { 
+    regester: async (fname,lname,username,email,password,passwordConf) => {
         const {data} = await axios.post("http://127.0.0.1:8000/api/register",{
             username,
             first_name: fname,
@@ -22,11 +22,11 @@ export const authRemote = {
     login: async (usernameOrEmail,password) => {
 
         if (usernameOrEmail.includes("@")){
-            console.log("emaillll");
             const {data} = await axios.post("http://127.0.0.1:8000/api/login",{
                 email:usernameOrEmail,
                 password
             });
+            console.log(data)
             return data;
         }else{
             console.log("username");
@@ -34,6 +34,7 @@ export const authRemote = {
                 username:usernameOrEmail,
                 password
             });
+            console.log(data)
             return data;
         }
     }

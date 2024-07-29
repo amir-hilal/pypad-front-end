@@ -32,7 +32,7 @@ function VerifyEmail() {
             try {
                 const response = await authRemote.emailVerification(email,code)
                 authLocal.saveToken(response.data.token)
-                navigate("/")
+                navigate("/login")
             } catch (error) {
                 console.log(error);
             }finally {
