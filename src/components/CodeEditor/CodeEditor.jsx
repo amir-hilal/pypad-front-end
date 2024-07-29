@@ -1,5 +1,4 @@
 import { useRef, useState } from "react";
-import { Box, HStack } from "@chakra-ui/react";
 import { Editor } from "@monaco-editor/react";
 import "../../assets/css/code-editor.css";
 import { executeCode } from "../../services/CodeService";
@@ -23,15 +22,19 @@ const CodeEditor = () => {
 
   const [loading, setLoading] = useState(false);
 
+  const [fileName, setFileName] = useState("Untitled.py");
+
+  const [showFileNameInput, setShowFileNameInput] = useState(false);
+
   const options = {
     fontSize: fontSize,
   };
 
   async function compile() {
     const sourceCode = userCode;
-    console.log(sourceCode);
+    console.log(userInput);
     try {
-      const { run: result } = await executeCode(sourceCode);
+      const { run: result } = await executeCode(sourceCode, userInput);
       setUserOutput(result.output);
     } catch (error) {
       console.log("error" + error);
@@ -42,8 +45,11 @@ const CodeEditor = () => {
     editorRef.current = editor;
     editor.focus();
   };
+  const saveCode = ()=>{
 
-  //clear the output 
+  }
+
+  //clear the output
   function clearOutput() {
     setUserOutput("");
   }
@@ -51,6 +57,19 @@ const CodeEditor = () => {
   return (
     <div className="main">
       <div className="left-container">
+      <div className="file-name-input">
+          <label htmlFor="file-name"
+          onClick={() => showFileNameInput?setShowFileNameInput(false):setShowFileNameInput(true) }
+          >{showFileNameInput ? "File Name:" : "Untitled.py"}</label>
+          {showFileNameInput && (
+            <input
+              type="text"
+              id="file-name"
+              value={fileName}
+              onChange={(e) => setFileName(e.target.value)}
+            />
+          )}
+        </div>
         <Editor
           options={options}
           height="calc(100vh - 50px)"
@@ -64,9 +83,14 @@ const CodeEditor = () => {
           }}
           onMount={onMount}
         />
-        <button className="run-btn" onClick={() => compile()}>
+        <div className="flex">
+        <button className="save-btn" onClick={() => compile()}>
           Run
         </button>
+        <button className="run-btn" onClick={() => saveCode()}>
+          Save
+        </button>
+        </div>
       </div>
       <div className="right-container">
         <h4>Input:</h4>
