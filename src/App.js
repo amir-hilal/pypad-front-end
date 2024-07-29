@@ -24,9 +24,8 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/verify" element={<VerifyEmailPage />} />
-
+            <Route path="/workspace" element={<WorkspacePage />} />
             {/* Protected Routes */}
-            <Route path="/workspace" element={<PrivateRoute element={WorkspacePage} />} />
             <Route path="/search" element={<PrivateRoute element={SearchPage} />} />
             <Route path="/chats" element={<PrivateRoute element={ChatPage} />} />
             <Route path="/profile" element={<PrivateRoute element={ProfilePage} />} />
