@@ -5,7 +5,7 @@ import { ClipLoader } from 'react-spinners';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { authRemote } from "../../services/AuthService";
-import { login } from "../../slices/authSlices";
+import { login } from "../../slices/authSlice";
 
 function Login() {
     const navigate = useNavigate();

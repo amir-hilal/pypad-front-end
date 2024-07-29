@@ -5,7 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {  useNavigate } from "react-router-dom";
 import { ClipLoader } from 'react-spinners';
-import { login } from "../../slices/authSlices";
+import { login } from "../../slices/authSlice";
 
 function VerifyEmail() {
 
@@ -33,7 +33,7 @@ function VerifyEmail() {
 
             try {
                 const response = await authRemote.emailVerification(email,code)
-                
+
                 if (response.status === 201) {
                     dispatch(login({ token: response.authorisation.token, user: response.data.user }));
                     localStorage.setItem("token", response.data.token)

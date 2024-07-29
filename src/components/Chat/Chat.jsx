@@ -1,55 +1,39 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import {jwtDecode} from 'jwt-decode';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchMessages, sendMessage } from '../../services/ChatService';
+import { addMessage, setMessages, selectMessagesForUser } from '../../slices/chatSlice';
 import '../../assets/css/styles.css';
 
 const Chat = ({ chat }) => {
-  const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
+  const messages = useSelector((state) => selectMessagesForUser(state, chat.id));
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    const fetchMessages = async () => {
+    const getMessages = async () => {
       try {
-        const token = localStorage.getItem('token');
-        const response = await axios.get(`http://127.0.0.1:8000/api/chats/${chat.id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setMessages(response.data);
+        const messages = await fetchMessages(chat.id);
+        dispatch(setMessages({ userId: chat.id, messages }));
       } catch (error) {
         console.error('Error fetching messages:', error);
       }
     };
 
-    fetchMessages();
-  }, [chat]);
+    getMessages();
+  }, [chat, dispatch]);
 
   const handleSendMessage = async () => {
     if (!newMessage.trim()) return;
 
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.post(
-        'http://127.0.0.1:8000/api/chats',
-        {
-          receiver_id: chat.id,
-          message: newMessage,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          }
-        }
-      );
-      setMessages([...messages, response.data]);
+      const message = await sendMessage(chat.id, newMessage);
+      dispatch(addMessage({ userId: chat.id, message }));
       setNewMessage('');
     } catch (error) {
       console.error('Error sending message:', error);
     }
   };
 
-  console.log(messages)
   const currentUserId = parseInt(localStorage.getItem('userId')); // Get the current user ID from local storage
 
   return (

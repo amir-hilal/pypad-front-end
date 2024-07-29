@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { logout } from '../../slices/authSlices';
+import { logout } from '../../slices/authSlice';
 import '../../assets/css/styles.css';
 
 const Navbar = () => {

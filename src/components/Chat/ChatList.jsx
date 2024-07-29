@@ -1,24 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { fetchChatUsers } from '../../services/ChatService';
+import { setChatUsers } from '../../slices/chatSlice';
 import '../../assets/css/styles.css';
 
 const ChatList = ({ onSelectChat }) => {
-  const [chats, setChats] = useState([]);
   const [selectedChatId, setSelectedChatId] = useState(null);
   const [loading, setLoading] = useState(true);
+  const chatUsers = useSelector((state) => state.chat.users);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchChatUsers = async () => {
+    const fetchUsers = async () => {
       try {
-        const token = localStorage.getItem('token');
-        const response = await axios.get('http://127.0.0.1:8000/api/chat-users', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setChats(response.data);
+        const chatUsers = await fetchChatUsers();
+        dispatch(setChatUsers(chatUsers));
       } catch (error) {
         console.error('Error fetching chat users:', error);
       } finally {
@@ -26,8 +24,8 @@ const ChatList = ({ onSelectChat }) => {
       }
     };
 
-    fetchChatUsers();
-  }, []);
+    fetchUsers();
+  }, [dispatch]);
 
   const handleSelectChat = (chat) => {
     setSelectedChatId(chat.id);
@@ -45,9 +43,9 @@ const ChatList = ({ onSelectChat }) => {
         <div className="text-center">
           <p className="text-light p-3">Loading...</p>
         </div>
-      ) : chats.length > 0 ? (
+      ) : chatUsers.length > 0 ? (
         <ul>
-          {chats.map((chat) => (
+          {chatUsers.map((chat) => (
             <li
               key={chat.id}
               onClick={() => handleSelectChat(chat)}
