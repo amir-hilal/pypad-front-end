@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
-import { authLocal } from '../../services/AuthLocalService';
+import { useDispatch } from "react-redux";
 import { authRemote } from '../../services/AuthService';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {  useNavigate } from "react-router-dom";
 import { ClipLoader } from 'react-spinners';
+import { login } from "../../slices/authSlices";
 
 function VerifyEmail() {
 
     const navigate = useNavigate()
+    const dispatch = useDispatch();
+
     const [loading, setLoading] = useState(false);
 
     const [code, setCode] = useState('');
@@ -18,7 +21,7 @@ function VerifyEmail() {
         setCode(e.target.value);
     };
 
-    const email = authLocal.getEmail();
+    const email = localStorage.getItem("email")
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -26,13 +29,18 @@ function VerifyEmail() {
             setError('Code cannot be empty');
             toast.error('Enter the code you received')
         } else {
-            console.log('verifying')
             setLoading(true);
 
             try {
                 const response = await authRemote.emailVerification(email,code)
-                authLocal.saveToken(response.data.token)
-                navigate("/login")
+                
+                if (response.status === 201) {
+                    dispatch(login({ token: response.authorisation.token, user: response.data.user }));
+                    localStorage.setItem("token", response.data.token)
+                    navigate("/");
+                    toast.success("Registered and Logged in successfully!");
+
+                }
             } catch (error) {
                 console.log(error);
             }finally {

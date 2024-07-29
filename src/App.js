@@ -12,6 +12,7 @@ import Signup from './pages/Signup';
 import VerifyEmailPage from './pages/VerifyEmailPage';
 import WorkspacePage from './pages/WorkSpacePage';
 import PrivateRoute from './utils/PrivateRoute';
+import GuestRoute from './utils/GuestRoute';
 
 function App() {
   return (
@@ -21,9 +22,9 @@ function App() {
         <div className="flex-grow flex-center">
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/verify" element={<VerifyEmailPage />} />
+            <Route path="/login" element={<GuestRoute element={LoginPage} />} />
+            <Route path="/signup" element={<GuestRoute element={Signup}  />} />
+            <Route path="/verify" element={<GuestRoute element={VerifyEmailPage} />} />
 
             {/* Protected Routes */}
             <Route path="/workspace" element={<PrivateRoute element={WorkspacePage} />} />

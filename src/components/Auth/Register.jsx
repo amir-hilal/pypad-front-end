@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "../../assets/css/styles.css";
-import { authLocal } from "../../services/AuthLocalService";
 import { authRemote } from "../../services/AuthService";
 import { ClipLoader } from 'react-spinners';
 
@@ -101,23 +100,19 @@ function Register() {
         setLoading(true);
 
         try {
-            // console.log(passwordConfFlag,passwordConfFlag, usernameFlag, l_nameFlag, f_nameFlag,emailFlag)
             console.log(fname,lname,username,email,password,passwordConf)
             if (passwordConfFlag && passwordFlag && usernameFlag && l_nameFlag && f_nameFlag && emailFlag) {
                 const data = await authRemote.regester(fname, lname, username, email, password, passwordConf)
                 console.log(data);
                 if (data.status = 201) {
+                    localStorage.setItem("email",email)
                     navigate("/verify")
-                    authLocal.saveEmail(email)
-                    authLocal.saveUsername(username)
                 }
             } else {
                 toast.error("All Fields are required")
             }
         } catch (error) {
-            // console.log(error);
-      toast.error(error.response.data.email ? error.response.data.email[0] : error.response.data.username[0]);
-
+            toast.error(error.response.data.email ? error.response.data.email[0] : error.response.data.username[0]);
             errorRef.current.innerHTML = error.response.data.email ? error.response.data.email[0] : error.response.data.username[0];
         }finally {
             setLoading(false);

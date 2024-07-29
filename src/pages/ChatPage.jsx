@@ -1,13 +1,14 @@
-import React from 'react';
+import React,{ useState } from 'react';
 import '../assets/css/styles.css';
 import Chat from '../components/Chat/Chat';
 import ChatList from '../components/Chat/ChatList';
 
 const ChatPage = () => {
-  const [selectedChat, setSelectedChat] = React.useState(null);
+  const [selectedChat, setSelectedChat] = useState(null);
 
   const handleSelectChat = (chat) => {
     setSelectedChat(chat);
+    console.log(chat)
   };
 
   return (

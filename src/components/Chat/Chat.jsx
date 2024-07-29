@@ -49,9 +49,8 @@ const Chat = ({ chat }) => {
     }
   };
 
-  const token = localStorage.getItem('token');
-  const decodedToken = jwtDecode(token);
-  const currentUserId = parseInt(decodedToken.sub); // Assuming the user ID is stored in the 'sub' claim and converting it to an integer
+  console.log(messages)
+  const currentUserId = parseInt(localStorage.getItem('userId')); // Get the current user ID from local storage
 
   return (
     <div className="bg-light text-dark p-3 h-full w-full flex flex-column">
