@@ -1,0 +1,77 @@
+/* :root {
+    --neon-blue: #00aaff;
+    --dark-gray: #2C2C2C;
+    --text-light: #FFFFFF;
+    --text-dark: #000000;
+    --bg-light: #F5F5F5;
+    --bg-dark: #1E1E1E;
+  } */
+
+.verification-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.verification-box {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+
+.verification-box h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+}
+
+.verification-box p {
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+    color: #333;
+}
+
+.input-group button {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--neon-blue);
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.input-group button:hover {
+    background-color: var(--neon-blue);
+}
+
+.error {
+    color: red;
+    margin-bottom: 20px;
+}

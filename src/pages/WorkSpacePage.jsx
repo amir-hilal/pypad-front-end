@@ -1,13 +1,13 @@
 import React from 'react';
 import '../assets/css/styles.css';
 
-const ProfilePage = () => {
+const WorkspacePage = () => {
   return (
     <div className="bg-light h-75 text-light p-5 text-center">
-      <h1 className="text-neon">profile</h1>
-      <p>user profile here</p>
+      <h1 className="text-neon">Workspace</h1>
+      <p>Start coding here!</p>
     </div>
   );
 };
 
-export default ProfilePage;
+export default WorkspacePage;
