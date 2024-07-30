@@ -37,6 +37,7 @@ const Navbar = () => {
             <Link to="/workspace" className="nav-button m-2" onClick={closeMobileMenu}>My Workspace</Link>
             <Link to="/search" className="nav-button m-2" onClick={closeMobileMenu}>Search</Link>
             <Link to="/chats" className="nav-button m-2" onClick={closeMobileMenu}>Chats</Link>
+            <Link to="/friends" className="nav-button m-2" onClick={closeMobileMenu}>Friends</Link>
             <Link to="/profile" className="nav-button m-2" onClick={closeMobileMenu}>Profile</Link>
             <button onClick={handleLogout} className="nav-button m-2">Logout</button>
           </>

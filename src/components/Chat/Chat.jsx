@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchMessages, sendMessage } from '../../services/ChatService';
 import { addMessage, setMessages, selectMessagesForUser } from '../../slices/chatSlice';
 import '../../assets/css/styles.css';
+import image from '../../assets/images/image.png';
 
 const Chat = ({ chat }) => {
   const [newMessage, setNewMessage] = useState('');
@@ -34,31 +35,43 @@ const Chat = ({ chat }) => {
     }
   };
 
-  const currentUserId = parseInt(localStorage.getItem('userId')); // Get the current user ID from local storage
+  const handleChange = (e) => {
+    setNewMessage(e.target.value);
+    if (e.target.value.trim()) {
+      e.target.classList.add('has-text');
+    } else {
+      e.target.classList.remove('has-text');
+    }
+  };
+
+  const currentUserId = parseInt(localStorage.getItem('userId'));
 
   return (
-    <div className="bg-light text-dark p-3 h-full w-full flex flex-column">
-      <h2 className="text-neon">{chat.username}</h2>
+    <div className="bg-light text-dark  h-full w-full flex flex-column">
+      <div className='flex bb-3 w-full align-center'>
+        <img src={image} width={60} height={60} className='circle m-2' alt="Chat" />
+        <h2 className="text-dark bg-light  m-0 p-4 w-full">{chat.username}</h2>
+      </div>
       <div className="chat-box h-full flex flex-column w-full">
         {messages.map((message) => (
           <div
             key={message.id}
-            className={`p-2 m-1 rounded shadow w-75 ${parseInt(message.sender_id) === currentUserId ? 'bg-sender text-dark align-right' : 'bg-receiver text-light align-left'}`}
+            className={`p-2 m-1 rounded shadow w-75 ${parseInt(message.sender_id) === currentUserId ? 'bg-sender text-light align-right' : 'bg-receiver text-light align-left'}`}
           >
-            <p>{message.message}</p>
-            <small className="text-muted">{new Date(message.created_at).toLocaleTimeString()}</small>
+            <p className='m-1'>{message.message}</p>
+            <p className=" m-1 ts-small text-shady">{new Date(message.created_at).toLocaleTimeString()}</p>
           </div>
         ))}
       </div>
-      <div className="flex align-center mt-2">
+      <div className=" p-4 flex align-center mt-2">
         <input
           type="text"
           value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
+          onChange={handleChange}
           placeholder="Type your message..."
-          className="p-2 w-full rounded"
+          className="opc-5 send-message border border-light-gray p-2 w-full rounded"
         />
-        <button onClick={handleSendMessage} className="bg-neon text-dark p-2 rounded shadow-neon ml-2">
+        <button onClick={handleSendMessage} className="bg-neon border-light-gray text-light p-2 rounded shadow-neon ml-2">
           Send
         </button>
       </div>

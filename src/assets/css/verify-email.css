@@ -1,11 +1,11 @@
-:root {
-    --neon-blue: #00FFFF;
+/* :root {
+    --neon-blue: #00aaff;
     --dark-gray: #2C2C2C;
     --text-light: #FFFFFF;
     --text-dark: #000000;
     --bg-light: #F5F5F5;
     --bg-dark: #1E1E1E;
-  }
+  } */
 
 .verification-container {
     display: flex;

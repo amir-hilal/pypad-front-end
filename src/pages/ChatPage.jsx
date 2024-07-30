@@ -35,7 +35,7 @@ const ChatPage = () => {
         {selectedChat ? (
           <Chat chat={selectedChat} />
         ) : (
-          <div className="text-center p-5 w-full">
+          <div className="text-center p-5 w-full bg-shady">
             <h2 className="text-neon">Select a chat to start messaging</h2>
           </div>
         )}

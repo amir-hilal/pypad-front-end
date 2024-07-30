@@ -13,6 +13,7 @@ import VerifyEmailPage from './pages/VerifyEmailPage';
 import WorkspacePage from './pages/WorkSpacePage';
 import PrivateRoute from './utils/PrivateRoute';
 import GuestRoute from './utils/GuestRoute';
+import FriendsPage from './pages/FriendsPage';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
             <Route path="/workspace" element={<PrivateRoute element={WorkspacePage} />} />
             <Route path="/search" element={<PrivateRoute element={SearchPage} />} />
             <Route path="/chats" element={<PrivateRoute element={ChatPage} />} />
+            <Route path="/friends" element={<PrivateRoute element={FriendsPage} />} />
             <Route path="/profile" element={<PrivateRoute element={ProfilePage} />} />
 
             <Route path="*" element={<Navigate to="/" />} />

@@ -37,11 +37,11 @@ const ChatList = ({ onSelectChat }) => {
   };
 
   return (
-    <div className="bg-light-gray h-75 text-light p-3 w-25 chat-users-list">
+    <div className="h-75 text-light p-3 w-25 chat-users-list bl-2">
       <h2 className="text-neon">Chats</h2>
       {loading ? (
-        <div className="text-center">
-          <p className="text-light p-3">Loading...</p>
+        <div className="loader-container">
+          <div className="loader"></div>
         </div>
       ) : chatUsers.length > 0 ? (
         <ul>
@@ -49,7 +49,7 @@ const ChatList = ({ onSelectChat }) => {
             <li
               key={chat.id}
               onClick={() => handleSelectChat(chat)}
-              className={`p-2 m-1 cursor-pointer rounded bg-light text-dark ${selectedChatId === chat.id ? 'bg-neon' : ''}`}
+              className={`p-2 cursor-pointer rounded bg-light mb-2 border border-neon  ${selectedChatId === chat.id ? 'bg-neon text-light' : 'text-dark'}`}
             >
               {chat.username}
             </li>
