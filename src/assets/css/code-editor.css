@@ -180,3 +180,7 @@
     border: none;
     outline: none;
   }
+
+  .error {
+    margin-bottom: 0;
+  }

@@ -1,10 +1,12 @@
 import { useRef, useState } from "react";
 import { Editor } from "@monaco-editor/react";
 import "../../assets/css/code-editor.css";
-import { executeCode } from "../../services/CodeService";
+import { executeCode, storeCode } from "../../services/CodeService";
 
 const CodeEditor = () => {
   const editorRef = useRef();
+  const errorRef = useRef();
+
   const [value, setValue] = useState("");
   const [language, setLanguage] = useState("python");
 
@@ -45,9 +47,15 @@ const CodeEditor = () => {
     editorRef.current = editor;
     editor.focus();
   };
-  const saveCode = ()=>{
-
-  }
+  const saveCode = async () => {
+    try {
+      const request = await storeCode(fileName, userCode);
+      console.log(request);
+    } catch (error) {
+      console.log(error.response.data);
+      errorRef.current.innerHTML = error.response.data.errors.filename[0]
+    }
+  };
 
   //clear the output
   function clearOutput() {
@@ -57,10 +65,17 @@ const CodeEditor = () => {
   return (
     <div className="main">
       <div className="left-container">
-      <div className="file-name-input">
-          <label htmlFor="file-name"
-          onClick={() => showFileNameInput?setShowFileNameInput(false):setShowFileNameInput(true) }
-          >{showFileNameInput ? "File Name:" : fileName}</label>
+        <div className="file-name-input">
+          <label
+            htmlFor="file-name"
+            onClick={() =>
+              showFileNameInput
+                ? setShowFileNameInput(false)
+                : setShowFileNameInput(true)
+            }
+          >
+            {showFileNameInput ? "File Name:" : fileName}
+          </label>
           {showFileNameInput && (
             <input
               type="text"
@@ -69,7 +84,9 @@ const CodeEditor = () => {
               onChange={(e) => setFileName(e.target.value)}
             />
           )}
+          <div className="error" ref={errorRef}></div>
         </div>
+        
         <Editor
           options={options}
           height="calc(100vh - 50px)"
@@ -84,12 +101,12 @@ const CodeEditor = () => {
           onMount={onMount}
         />
         <div className="flex">
-        <button className="save-btn" onClick={() => compile()}>
-          Run
-        </button>
-        <button className="run-btn" onClick={() => saveCode()}>
-          Save
-        </button>
+          <button className="save-btn" onClick={() => compile()}>
+            Run
+          </button>
+          <button className="run-btn" onClick={() => saveCode()}>
+            Save
+          </button>
         </div>
       </div>
       <div className="right-container">
