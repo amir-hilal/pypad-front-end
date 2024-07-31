@@ -11,7 +11,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     dispatch(logout());
-    setIsMobileMenuOpen(false); // Close the menu on logout
+    setIsMobileMenuOpen(false); 
   };
 
   const toggleMobileMenu = () => {

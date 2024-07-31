@@ -28,11 +28,11 @@ function App() {
             <Route path="/verify" element={<GuestRoute element={VerifyEmailPage} />} />
 
             {/* Protected Routes */}
-            <Route path="/workspace" element={<PrivateRoute element={WorkspacePage} />} />
             <Route path="/search" element={<PrivateRoute element={SearchPage} />} />
             <Route path="/chats" element={<PrivateRoute element={ChatPage} />} />
             <Route path="/friends" element={<PrivateRoute element={FriendsPage} />} />
             <Route path="/profile" element={<PrivateRoute element={ProfilePage} />} />
+            <Route path="/workspace" element={<PrivateRoute element={WorkspacePage} />} />
 
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>

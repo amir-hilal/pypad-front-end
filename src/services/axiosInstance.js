@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
 import { logout } from '../slices/authSlice';
 import store from '../store'; // make sure to import the store
 
@@ -9,6 +9,8 @@ const axiosInstance = axios.create({
 
 let isRefreshing = false;
 let failedQueue = [];
+
+const history = createBrowserHistory();
 
 const processQueue = (error, token = null) => {
   failedQueue.forEach(prom => {
@@ -49,9 +51,8 @@ axiosInstance.interceptors.request.use(
         isRefreshing = false;
         processQueue(refreshError, null);
         const dispatch = store.dispatch;
-        const navigate = useNavigate();
         dispatch(logout());
-        navigate('/login');
+        history.push('/login');
         return Promise.reject(refreshError);
       }
     } else {
@@ -75,26 +76,11 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   async (error) => {
-    const originalRequest = error.config;
-    if (error.response.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-      const token = localStorage.getItem('token');
-      try {
-        const refreshResponse = await axiosInstance.post('/refresh', {}, { headers: { Authorization: `Bearer ${token}` } });
-        const { token: newToken } = refreshResponse.data.authorisation;
-        localStorage.setItem('token', newToken);
-        axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
-        originalRequest.headers.Authorization = `Bearer ${newToken}`;
-        return axiosInstance(originalRequest);
-      } catch (refreshError) {
-        const dispatch = store.dispatch;
-        const navigate = useNavigate();
-        dispatch(logout());
-        navigate('/login');
-        return Promise.reject(refreshError);
-      }
+    if (error.response.status === 401) {
+      const dispatch = store.dispatch;
+      dispatch(logout());
+      history.push('/login');
     }
-
     return Promise.reject(error);
   }
 );
