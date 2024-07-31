@@ -11,14 +11,16 @@ export const fetchAllFriendRequests = createAsyncThunk('friends/fetchAllFriendRe
   return response;
 });
 
-export const acceptRequest = createAsyncThunk('friends/acceptRequest', async (requestId) => {
+export const acceptRequest = createAsyncThunk('friends/acceptRequest', async (requestId, { getState }) => {
   const response = await acceptFriendRequest(requestId);
-  return response;
+  const state = getState();
+  const acceptedRequest = state.friends.friendRequests.find(request => request.id === requestId);
+  return { id: requestId, friend: acceptedRequest };
 });
 
 export const rejectRequest = createAsyncThunk('friends/rejectRequest', async (requestId) => {
   const response = await rejectFriendRequest(requestId);
-  return response;
+  return { id: requestId };
 });
 
 const friendSlice = createSlice({

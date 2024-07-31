@@ -531,7 +531,7 @@ form .text h3 a:hover{
   cursor: pointer;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 868px) {
 
   .home-page {
     padding: 2rem;
