@@ -50,3 +50,21 @@ export const getCode = async(id)=>{
   )
   return data;
 }
+
+export const getAllCode = async()=>{
+  const {data} = await axios.get(`http://127.0.0.1:8000/api/codes/`,
+    {
+      headers: {Authorization : `Bearer ${token}`}
+    }
+  )
+  return data;
+}
+
+export const deletCode = async(id)=>{
+  const {data} = await axios.delete(`http://127.0.0.1:8000/api/codes/${id}`,
+    {
+      headers: {Authorization : `Bearer ${token}`}
+    }
+  )
+  return data;
+}

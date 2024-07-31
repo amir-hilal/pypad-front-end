@@ -1,16 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import "../../assets/css/profile.css"
-import { storeCode } from "../../services/CodeService";
-const fetchFiles = () => {
-  return [
-    { id: 1, name: 'file1.py' },
-    { id: 2, name: 'file2.py' },
-    { id: 3, name: 'file3.py' },
-  ];
-};
+import { deletCode, getAllCode, storeCode } from "../../services/CodeService";
+import { useNavigate } from "react-router-dom";
+
 
 function Profile() {
-    
+
+    const navigate = useNavigate();
   const [files, setFiles] = useState([]);
   const [isCreating, setIsCreating] = useState(false);
   const [newFileName, setNewFileName] = useState('Untitled.py');
@@ -19,16 +15,27 @@ function Profile() {
 
   useEffect(() => {
     // Fetch files from API or data source
-    const filesData = fetchFiles();
-    setFiles(filesData);
+    const filesData = async()=>{
+      const data = await getAllCode();
+      console.log(data);
+      setFiles(data)
+    }
+    filesData()
   }, []);
 
   const handleEdit = (id) => {
     console.log(`Edit file with id: ${id}`);
+    navigate(`/code/${id}`)
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     setFiles(files.filter(file => file.id !== id));
+    try {
+      const request = await deletCode(id)
+      console.log(request);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleCreate = () => {
@@ -40,18 +47,18 @@ function Profile() {
       const request = await storeCode(newFileName, "#this is a comment");
       errorRef.current.innerHTML = ""
       console.log(request);
+      if (newFileName) {
+        const newFile = {
+          id: files.length + 1, 
+          name: newFileName
+        };
+        setFiles([...files, newFile]);
+        setNewFileName('');
+        setIsCreating(false);
+      }
     } catch (error) {
       console.log(error.response.data);
       errorRef.current.innerHTML = error.response.data.message
-    }
-    if (newFileName) {
-      const newFile = {
-        id: files.length + 1, 
-        name: newFileName
-      };
-      setFiles([...files, newFile]);
-      setNewFileName('');
-      setIsCreating(false);
     }
   };
 
@@ -60,9 +67,6 @@ function Profile() {
     setIsCreating(false);
   };
 
-  const createFile = () =>{
-
-  }
   return (
     <div className="container">
       <h1>Profile Page</h1>
@@ -85,7 +89,7 @@ function Profile() {
       <ul>
         {files.map((file) => (
           <li key={file.id}>
-            {file.name}
+            {file.filename}
             <div>
               <button className="edit" onClick={() => handleEdit(file.id)}>Edit</button>
               <button className="delete" onClick={() => handleDelete(file.id)}>Delete</button>

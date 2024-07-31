@@ -31,7 +31,7 @@ const CodeEditor = ({ id }) => {
 
   useEffect(() => {
     if (id !== undefined) {
-      const code = async () => {
+      const code = async() => {
         try {
           const data = await getCode(id);
           console.log(data);
