@@ -180,3 +180,8 @@ Styles for the main container
   .error {
     margin-bottom: 0;
   }
+
+  .suggestion-box h4, .suggestion-box pre {
+    display: block;
+    color: #ffff;
+  }

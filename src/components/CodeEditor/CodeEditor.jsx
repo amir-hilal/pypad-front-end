@@ -1,8 +1,9 @@
-import { useRef, useState } from "react";
+import { useRef, useState,useEffect,useCallback } from "react";
 import { Editor } from "@monaco-editor/react";
 import "../../assets/css/code-editor.css";
-import { executeCode, storeCode } from "../../services/CodeService";
-
+import { executeCode, storeCode, getCodeSuggestion } from "../../services/CodeService";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const CodeEditor = () => {
   const editorRef = useRef();
   const errorRef = useRef();
@@ -27,6 +28,7 @@ const CodeEditor = () => {
   const [fileName, setFileName] = useState("Untitled.py");
 
   const [showFileNameInput, setShowFileNameInput] = useState(false);
+  const [suggestion, setSuggestion] = useState("");
 
   const options = {
     fontSize: fontSize,
@@ -50,20 +52,54 @@ const CodeEditor = () => {
   const saveCode = async () => {
     try {
       const request = await storeCode(fileName, userCode);
-      console.log(request);
+      toast.success("Code saved successfully!");
     } catch (error) {
       console.log(error.response.data);
       errorRef.current.innerHTML = error.response.data.errors.filename[0]
+      toast.error("Failed to save code.");
     }
   };
 
+  const fetchSuggestion = useCallback(
+    async (code) => {
+      try {
+        const response = await getCodeSuggestion(code);
+        setSuggestion(response.choices[0].message.content);
+      } catch (error) {
+        console.error('Error fetching suggestion:', error);
+        toast.error("Failed to fetch code suggestion.");
+      }
+    },
+    []
+  );
   //clear the output
   function clearOutput() {
     setUserOutput("");
   }
 
+  // Debounce function
+  const debounce = (func, delay) => {
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        func.apply(this, args);
+      }, delay);
+    };
+  };
+
+  // Debounced version of fetchSuggestion
+  const debouncedFetchSuggestion = useCallback(debounce(fetchSuggestion, 1500), [fetchSuggestion]);
+
+  useEffect(() => {
+    if (userCode.trim()) {
+      debouncedFetchSuggestion(userCode);
+    }
+  }, [userCode, debouncedFetchSuggestion]);
+
+
   return (
-    <div className="main flex h-75">
+    <div className="main flex min-h-75">
       <div className="left-container">
         <div className="file-name-input">
           <label
@@ -107,6 +143,12 @@ const CodeEditor = () => {
             Save
           </button>
         </div>
+        {suggestion && (
+          <div className="suggestion-box text-light">
+            <h4>Suggestion:</h4>
+            <pre>{suggestion}</pre>
+          </div>
+        )}
       </div>
       <div className="right-container">
         <h4>Input:</h4>
@@ -134,6 +176,7 @@ const CodeEditor = () => {
           </div>
         )}
       </div>
+      <ToastContainer />
     </div>
   );
 };

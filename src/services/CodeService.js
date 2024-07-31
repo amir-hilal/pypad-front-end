@@ -28,3 +28,10 @@ export const storeCode = async(fileName,userCode) => {
   })
   return data;
 }
+
+export const getCodeSuggestion = async (userCode) => {
+  const response = await axios.post('http://localhost:4000/api/openai/chat', {
+    message: `Suggest a code completion for the following code(write only code, no english at all):\n\n${userCode}`,
+  });
+  return response.data;
+};
