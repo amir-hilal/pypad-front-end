@@ -30,7 +30,8 @@ export const storeCode = async(fileName,userCode) => {
 }
 
 export const getCodeSuggestion = async (userCode) => {
-  const response = await axios.post('http://localhost:4000/api/openai/chat', {
+  // const response = await axios.post('http://localhost:4000/api/openai/chat', {
+  const response = await axios.post('https://openai-service.vercel.app/api/openai/chat', {
     message: `Suggest a code completion only in python for the following code(write only code, no english at all):\n\n${userCode}`,
   });
   return response.data;

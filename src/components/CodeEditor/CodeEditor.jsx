@@ -144,8 +144,8 @@ const CodeEditor = () => {
         </div>
         {suggestion && (
           <div className="suggestion-box text-light">
-            <h4>Suggestion:</h4>
-            <pre>{suggestion}</pre>
+            <h4 className="ts-larger">Suggestion:</h4>
+            <pre className="ts-larger">{suggestion}</pre>
           </div>
         )}
       </div>
