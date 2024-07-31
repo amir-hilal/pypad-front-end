@@ -14,6 +14,7 @@ import WorkspacePage from './pages/WorkSpacePage';
 import FriendsPage from './pages/FriendsPage';
 import AdminDashboardPage from './pages/AdminDashboardPage'; // Import the Admin Dashboard Page
 import PrivateRoute from './utils/PrivateRoute';
+import EditCodePage from './pages/EditCodePage';
 import GuestRoute from './utils/GuestRoute';
 import AdminRoute from './utils/AdminRoute'; // Import the AdminRoute component
 
@@ -30,6 +31,7 @@ function App() {
             <Route path="/verify" element={<GuestRoute element={VerifyEmailPage} />} />
 
             {/* Protected Routes */}
+            <Route path="/code/:id" element={<PrivateRoute element={EditCodePage} />} />
             <Route path="/search" element={<PrivateRoute element={SearchPage} />} />
             <Route path="/chats" element={<PrivateRoute element={ChatPage} />} />
             <Route path="/friends" element={<PrivateRoute element={FriendsPage} />} />

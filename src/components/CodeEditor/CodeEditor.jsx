@@ -1,15 +1,16 @@
 import { useRef, useState,useEffect,useCallback } from "react";
 import { Editor } from "@monaco-editor/react";
 import "../../assets/css/code-editor.css";
-import { executeCode, storeCode, getCodeSuggestion } from "../../services/CodeService";
+import { executeCode, getCode, storeCode, getCodeSuggestion, updateCode } from "../../services/CodeService";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-const CodeEditor = () => {
+const CodeEditor = ({ id }) => {
+  console.log(id === undefined);
+
   const editorRef = useRef();
   const errorRef = useRef();
 
   const [value, setValue] = useState("");
-  const [language, setLanguage] = useState("python");
 
   const [userCode, setUserCode] = useState(``);
 
@@ -34,6 +35,25 @@ const CodeEditor = () => {
     fontSize: fontSize,
   };
 
+  useEffect(() => {
+    if (id !== undefined) {
+      const code = async() => {
+        try {
+          const data = await getCode(id);
+          console.log(data);
+          setUserCode(data.code);
+          setFileName(data.filename);
+          console.log(fileName);
+          return data;
+        } catch (error) {
+          console.log(error.response.data.message);
+          errorRef.current.innerHTML = error.response.data.message;
+        }
+      };
+      code();
+    }
+  }, []);
+
   async function compile() {
     const sourceCode = userCode;
     try {
@@ -49,13 +69,27 @@ const CodeEditor = () => {
     editor.focus();
   };
   const saveCode = async () => {
-    try {
-      const request = await storeCode(fileName, userCode);
-      toast.success("Code saved successfully!");
-    } catch (error) {
-      console.log(error.response.data);
-      errorRef.current.innerHTML = error.response.data.errors.filename[0]
-      toast.error("Failed to save code.");
+    if (id !== undefined){
+      try {
+        const request = await updateCode(fileName, userCode, id)
+        toast.success("Code updated successfully!");
+        console.log(request);
+      } catch (error) {
+        console.log(error.response.data);
+        toast.error("Error saving code!");
+        errorRef.current.innerHTML = error.response.data.message;
+      }
+    }else{
+      try {
+        const request = await storeCode(fileName, userCode);
+        console.log(request);
+        toast.success("Code saved successfully!");
+        errorRef.current.innerHTML = "";
+      } catch (error) {
+        console.log(error.response.data);
+        toast.error("Error saving code!");
+        errorRef.current.innerHTML = error.response.data.message;
+      }
     }
   };
 
@@ -128,7 +162,8 @@ const CodeEditor = () => {
           theme={userTheme}
           language={userLang}
           defaultLanguage="python"
-          defaultValue={``}
+          defaultValue={""}
+          value={userCode}
           onChange={(value) => {
             setUserCode(value);
           }}

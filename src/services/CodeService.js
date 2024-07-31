@@ -36,3 +36,42 @@ export const getCodeSuggestion = async (userCode) => {
   });
   return response.data;
 };
+export const updateCode = async(fileName,userCode,id) => {
+  const {data} = await axios.put(`http://127.0.0.1:8000/api/codes/${id}`,
+    {
+      "filename":fileName,
+      "code":userCode
+    },
+    {
+      headers: {Authorization : `Bearer ${token}`},
+    }
+  )
+  return data;
+}
+
+export const getCode = async(id)=>{
+  const {data} = await axios.get(`http://127.0.0.1:8000/api/codes/${id}`,
+    {
+      headers: {Authorization : `Bearer ${token}`}
+    }
+  )
+  return data;
+}
+
+export const getAllCode = async()=>{
+  const {data} = await axios.get(`http://127.0.0.1:8000/api/codes/`,
+    {
+      headers: {Authorization : `Bearer ${token}`}
+    }
+  )
+  return data;
+}
+
+export const deletCode = async(id)=>{
+  const {data} = await axios.delete(`http://127.0.0.1:8000/api/codes/${id}`,
+    {
+      headers: {Authorization : `Bearer ${token}`}
+    }
+  )
+  return data;
+}
