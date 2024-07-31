@@ -4,7 +4,7 @@ import { logout } from '../slices/authSlice';
 import store from '../store'; // Make sure to import the store
 
 const axiosInstance = axios.create({
-  baseURL: 'http://3.28.56.231/api',
+  baseURL: 'https://3.28.56.231/api',
 });
 
 let isRefreshing = false;
