@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import "../../assets/css/profile.css"
-import { deletCode, getAllCode, storeCode } from "../../services/CodeService";
+import { deleteCode, getAllCode, storeCode } from "../../services/CodeService";
 import { useNavigate } from "react-router-dom";
 
 
@@ -31,7 +31,7 @@ function Profile() {
   const handleDelete = async (id) => {
     setFiles(files.filter(file => file.id !== id));
     try {
-      const request = await deletCode(id)
+      const request = await deleteCode(id)
       console.log(request);
     } catch (error) {
       console.log(error);
@@ -57,8 +57,7 @@ function Profile() {
         setIsCreating(false);
       }
     } catch (error) {
-      console.log(error.response.data);
-      errorRef.current.innerHTML = error.response.data.message
+      console.log(error);
     }
   };
 
