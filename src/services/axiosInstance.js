@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { createBrowserHistory } from 'history';
 import { logout } from '../slices/authSlice';
-import store from '../store'; // make sure to import the store
+import store from '../store'; // Make sure to import the store
 
 const axiosInstance = axios.create({
   baseURL: 'http://127.0.0.1:8000/api',
@@ -76,10 +76,15 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   async (error) => {
-    if (error.response.status === 401) {
-      const dispatch = store.dispatch;
-      dispatch(logout());
-      history.push('/login');
+    // Check if error.response is defined
+    if (error.response) {
+      if (error.response.status === 401) {
+        const dispatch = store.dispatch;
+        dispatch(logout());
+        history.push('/login');
+      }
+    } else {
+      console.error('Error:', error.message); // Log the error message for debugging
     }
     return Promise.reject(error);
   }
