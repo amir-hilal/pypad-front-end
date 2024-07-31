@@ -1,14 +1,15 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Editor } from "@monaco-editor/react";
 import "../../assets/css/code-editor.css";
-import { executeCode, storeCode } from "../../services/CodeService";
+import { executeCode, getCode, storeCode, updateCode } from "../../services/CodeService";
 
-const CodeEditor = () => {
+const CodeEditor = ({ id }) => {
+  console.log(id === undefined);
+
   const editorRef = useRef();
   const errorRef = useRef();
 
   const [value, setValue] = useState("");
-  const [language, setLanguage] = useState("python");
 
   const [userCode, setUserCode] = useState(``);
 
@@ -28,9 +29,24 @@ const CodeEditor = () => {
 
   const [showFileNameInput, setShowFileNameInput] = useState(false);
 
-  const options = {
-    fontSize: fontSize,
-  };
+  useEffect(() => {
+    if (id !== undefined) {
+      const code = async () => {
+        try {
+          const data = await getCode(id);
+          console.log(data);
+          setUserCode(data.code);
+          setFileName(data.filename);
+          console.log(fileName);
+          return data;
+        } catch (error) {
+          console.log(error.response.data.message);
+          errorRef.current.innerHTML = error.response.data.message;
+        }
+      };
+      code();
+    }
+  }, []);
 
   async function compile() {
     const sourceCode = userCode;
@@ -48,12 +64,23 @@ const CodeEditor = () => {
     editor.focus();
   };
   const saveCode = async () => {
-    try {
-      const request = await storeCode(fileName, userCode);
-      console.log(request);
-    } catch (error) {
-      console.log(error.response.data);
-      errorRef.current.innerHTML = error.response.data.errors.filename[0]
+    if (id !== undefined){
+      try {
+        const request = await updateCode(fileName,userCode,id)
+        console.log(request);
+      } catch (error) {
+        console.log(error.response.data);
+        errorRef.current.innerHTML = error.response.data.message;
+      }
+    }else{
+      try {
+        const request = await storeCode(fileName, userCode);
+        console.log(request);
+        errorRef.current.innerHTML = "";
+      } catch (error) {
+        console.log(error.response.data);
+        errorRef.current.innerHTML = error.response.data.message;
+      }
     }
   };
 
@@ -86,15 +113,15 @@ const CodeEditor = () => {
           )}
           <div className="error" ref={errorRef}></div>
         </div>
-        
+
         <Editor
-          options={options}
           height="calc(100vh - 50px)"
           width="100%"
           theme={userTheme}
           language={userLang}
           defaultLanguage="python"
-          defaultValue={``}
+          defaultValue={""}
+          value={userCode}
           onChange={(value) => {
             setUserCode(value);
           }}

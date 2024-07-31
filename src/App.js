@@ -12,6 +12,7 @@ import Signup from './pages/Signup';
 import VerifyEmailPage from './pages/VerifyEmailPage';
 import WorkspacePage from './pages/WorkSpacePage';
 import PrivateRoute from './utils/PrivateRoute';
+import EditCodePage from './pages/EditCodePage';
 
 function App() {
   return (
@@ -25,10 +26,11 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/verify" element={<VerifyEmailPage />} />
             <Route path="/workspace" element={<WorkspacePage />} />
+            <Route path="/code/:id" element={<EditCodePage />} />
             {/* Protected Routes */}
             <Route path="/search" element={<PrivateRoute element={SearchPage} />} />
             <Route path="/chats" element={<PrivateRoute element={ChatPage} />} />
-            <Route path="/profile" element={<PrivateRoute element={ProfilePage} />} />
+            <Route path="/profile" element={< ProfilePage />} />
 
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
