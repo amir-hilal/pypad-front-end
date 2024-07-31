@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState,useEffect,useCallback } from "react";
 import { Editor } from "@monaco-editor/react";
 import "../../assets/css/code-editor.css";
-import { executeCode, getCode, storeCode, updateCode } from "../../services/CodeService";
-
+import { executeCode, getCode, storeCode, getCodeSuggestion, updateCode } from "../../services/CodeService";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const CodeEditor = ({ id }) => {
   console.log(id === undefined);
 
@@ -28,6 +29,11 @@ const CodeEditor = ({ id }) => {
   const [fileName, setFileName] = useState("Untitled.py");
 
   const [showFileNameInput, setShowFileNameInput] = useState(false);
+  const [suggestion, setSuggestion] = useState("");
+
+  const options = {
+    fontSize: fontSize,
+  };
 
   useEffect(() => {
     if (id !== undefined) {
@@ -50,7 +56,6 @@ const CodeEditor = ({ id }) => {
 
   async function compile() {
     const sourceCode = userCode;
-    console.log(userInput);
     try {
       const { run: result } = await executeCode(sourceCode, userInput);
       setUserOutput(result.output);
@@ -66,31 +71,68 @@ const CodeEditor = ({ id }) => {
   const saveCode = async () => {
     if (id !== undefined){
       try {
-        const request = await updateCode(fileName,userCode,id)
+        const request = await updateCode(fileName, userCode, id)
+        toast.success("Code updated successfully!");
         console.log(request);
       } catch (error) {
         console.log(error.response.data);
+        toast.error("Error saving code!");
         errorRef.current.innerHTML = error.response.data.message;
       }
     }else{
       try {
         const request = await storeCode(fileName, userCode);
         console.log(request);
+        toast.success("Code saved successfully!");
         errorRef.current.innerHTML = "";
       } catch (error) {
         console.log(error.response.data);
+        toast.error("Error saving code!");
         errorRef.current.innerHTML = error.response.data.message;
       }
     }
   };
 
+  const fetchSuggestion = useCallback(
+    async (code) => {
+      try {
+        const response = await getCodeSuggestion(code);
+        setSuggestion(response.choices[0].message.content);
+      } catch (error) {
+        console.error('Error fetching suggestion:', error);
+        toast.error("Failed to fetch code suggestion.");
+      }
+    },
+    []
+  );
   //clear the output
   function clearOutput() {
     setUserOutput("");
   }
 
+  // Debounce function
+  const debounce = (func, delay) => {
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        func.apply(this, args);
+      }, delay);
+    };
+  };
+
+  // Debounced version of fetchSuggestion
+  const debouncedFetchSuggestion = useCallback(debounce(fetchSuggestion, 1500), [fetchSuggestion]);
+
+  useEffect(() => {
+    if (userCode.trim()) {
+      debouncedFetchSuggestion(userCode);
+    }
+  }, [userCode, debouncedFetchSuggestion]);
+
+
   return (
-    <div className="main">
+    <div className="main flex min-h-75">
       <div className="left-container">
         <div className="file-name-input">
           <label
@@ -115,7 +157,7 @@ const CodeEditor = ({ id }) => {
         </div>
 
         <Editor
-          height="calc(100vh - 50px)"
+          options={options}
           width="100%"
           theme={userTheme}
           language={userLang}
@@ -135,10 +177,16 @@ const CodeEditor = ({ id }) => {
             Save
           </button>
         </div>
+        {suggestion && (
+          <div className="suggestion-box text-light">
+            <h4 className="ts-larger">Suggestion:</h4>
+            <pre className="ts-larger">{suggestion}</pre>
+          </div>
+        )}
       </div>
       <div className="right-container">
         <h4>Input:</h4>
-        <div className="input-box">
+        <div className="input-box-code ts-larger">
           <textarea
             id="code-inp"
             onChange={(e) => setUserInput(e.target.value)}
@@ -148,7 +196,7 @@ const CodeEditor = ({ id }) => {
         {loading ? (
           <div className="spinner-box"></div>
         ) : (
-          <div className="output-box">
+          <div className="output-box-code ts-larger">
             <pre>{userOutput}</pre>
 
             <button
@@ -162,6 +210,7 @@ const CodeEditor = ({ id }) => {
           </div>
         )}
       </div>
+      <ToastContainer />
     </div>
   );
 };

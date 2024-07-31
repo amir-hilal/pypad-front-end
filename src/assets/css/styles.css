@@ -1,10 +1,12 @@
 :root {
-  --neon-blue: #00FFFF;
+  --neon-blue: #00aaff;
   --dark-gray: #2C2C2C;
+  --dark-light-gray: #717171;
   --text-light: #FFFFFF;
   --text-dark: #000000;
   --bg-light: #F5F5F5;
   --bg-dark: #1E1E1E;
+  --bg-shady:#cdcdcd;
 }
 
 /* Container Classes */
@@ -21,6 +23,10 @@
 
 .flex-row {
   flex-direction: row;
+}
+
+.align-center{
+  align-items: center;
 }
 
 .flex-column {
@@ -73,8 +79,19 @@
 .ts-larger{
   font-size: larger;
 }
+
+.ts-small{
+  font-size: small !important;
+}
 .fb-500{
   font-weight:500;
+}
+
+.circle{
+  border-radius: 50%;
+}
+.bb-3{
+  border-bottom: 3px solid var(--bg-shady);
 }
 /* Padding Classes */
 .p-1 {
@@ -98,6 +115,9 @@
 }
 
 /* Margin Classes */
+.m-0{
+  margin: 0;
+}
 .m-1 {
   margin: 0.25rem;
 }
@@ -150,6 +170,10 @@
   margin-bottom: 1rem;
 }
 
+.mr-3{
+  margin-right: 0.75rem;
+}
+
 
 /* Background Color Classes */
 .bg-dark {
@@ -164,6 +188,13 @@
   background-color: var(--neon-blue);
 }
 
+.bg-light-gray{
+  background-color: var(--dark-light-gray);
+}
+
+.bg-shady{
+  background-color: var(--bg-shady);
+}
 .bg-image{
   background-image: url('../images/bg.jpg');
   background-size: cover; /* Ensure the image covers the whole area */
@@ -176,6 +207,9 @@
   color: var(--text-light);
 }
 
+.text-shady{
+  color: var(--bg-shady);
+}
 
 .text-dark {
   color: var(--text-dark);
@@ -198,6 +232,10 @@
   border-color: var(--neon-blue);
 }
 
+.border-light-gray{
+  border-color: var(--dark-light-gray);
+}
+
 /* Border Radius Classes */
 .rounded {
   border-radius: 0.25rem;
@@ -212,22 +250,52 @@
   width: 100%;
 }
 
+.w-50{
+  width: 50%;
+}
+
+.w-25{
+  width: 25vw;
+}
+
+.w-75{
+  width: 75vw;
+}
+
+.min-h-75{
+  min-height: 75vh;
+}
+.w-min-130{
+  min-width: 130px;
+}
+
 .h-full {
   height: 100%;
 }
+
 
 .h-75{
   height: 75vh;
 }
 
-.h-15{
-  height: 15vh;
+.h-13{
+  height: 13.6vh;
 }
 
 .h-10{
   height: 10vh;
 }
 
+.h-button{
+  height: 48px;
+  transition: all 0.3s, color 0.3s, transform 0.3s;
+
+}
+
+.h-button:hover{
+  background-color: var(--bg-light);
+  color: var(--bg-dark);
+}
 .w-screen {
   width: 100vw;
 }
@@ -297,6 +365,34 @@
 .wide-button:hover{
   background-color: var(--bg-light)
 }
+
+/* Existing CSS here */
+
+/* HomePage Specific Styles */
+.home-page .features {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.home-page .feature {
+  background-color: var(--dark-gray);
+  color: var(--text-light);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin: 0.5rem;
+  flex: 1;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+
+}
+
+
+
 @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
 *{
   /* margin: 0;
@@ -391,4 +487,171 @@ form .text h3 a{
 }
 form .text h3 a:hover{
   text-decoration: underline;
+}
+
+
+
+/* Chat List Styles */
+.chat-list {
+  overflow-y: auto;
+  max-height: 100vh;
+}
+
+/* Chat Box Styles */
+.chat-box {
+  overflow-y: scroll;
+  max-height: 57vh;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.chat-users-list ul{
+  margin: 0;
+  padding: 0;
+}
+
+.chat-users-list li{
+  list-style:  none;
+}
+
+/* Existing CSS here */
+
+.nav-links {
+  display: flex;
+}
+
+.mobile-menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text-light);
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+@media (max-width: 868px) {
+
+  .home-page {
+    padding: 2rem;
+    height: auto;
+  }
+
+  .home-page h1 {
+    font-size: 2rem;
+  }
+
+  .home-page p {
+    font-size: 1rem;
+    padding: 1rem;
+  }
+
+  .home-page .m-5 {
+    margin: 1rem;
+  }
+
+  .home-page .start-button {
+    padding: 0.75rem 1.5rem;
+    font-size: medium;
+  }
+
+  .home-page .features {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .home-page .feature {
+    margin: 1rem 0;
+    width: 90%;
+  }
+
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100px;
+    left: 0;
+    width: 100%;
+    background-color: var(--dark-gray);
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .mobile-menu-toggle {
+    display: block;
+  }
+
+  .nav-button {
+    padding: 1rem;
+    border-bottom: 1px solid var(--bg-light);
+  }
+}
+
+
+/* Existing styles */
+
+/* Custom classes for message styling */
+.bg-sender {
+  background-color: var(--neon-blue);
+  align-self: flex-end; /* Align to the right */
+  max-width: 70%;
+  width: auto;
+}
+
+.bg-receiver {
+  background-color: var(--dark-gray);
+  align-self: flex-start; /* Align to the left */
+  max-width: 70%;
+  width: auto;
+
+}
+
+.align-right {
+  text-align: right;
+}
+
+.align-left {
+  text-align: left;
+}
+
+.opc-5{
+  opacity: 0.5;
+}
+
+.send-message:focus{
+  color: var(--text-dark);
+  font-weight: 900;
+}
+
+.send-message::placeholder{
+  font-weight: 300;
+}
+
+.send-message.has-text{
+  font-weight: 900;
+}
+
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px; /* Ensure this is visible at the bottom */
+}
+
+.loader {
+  border: 8px solid #f3f3f3; /* Light grey */
+  border-top: 8px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto; /* Center the loader */
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

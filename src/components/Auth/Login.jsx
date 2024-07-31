@@ -1,24 +1,29 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect,useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { ClipLoader } from 'react-spinners';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { authLocal } from "../../services/AuthLocalService";
 import { authRemote } from "../../services/AuthService";
-import { login } from "../../slices/authSlices";
+import { login } from "../../slices/authSlice";
 
 function Login() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const [usernameOrEmail, setUsernameOrEmail] = useState("");
-    // const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
 
 
     const errorRef = useRef();
+
+    useEffect(() => {
+      const storedEmail = localStorage.getItem("email");
+      if (storedEmail) {
+        setUsernameOrEmail(storedEmail);
+      }
+    }, []);
 
   const loginHandler = async () => {
     setLoading(true);
@@ -26,12 +31,9 @@ function Login() {
     try {
 
       const response = await authRemote.login(usernameOrEmail, password)
-      console.log(response);
       if (response.status === 200) {
         dispatch(login({ token: response.authorisation.token, user: response.data.user }));
-        authLocal.saveToken(response.authorisation.token)
-        authLocal.saveEmail(response.data.user.email)
-        authLocal.saveUsername(response.data.user.username)
+        localStorage.setItem("token",response.authorisation.token)
         navigate("/")
         toast.success("Logged in successfully!");
       }
