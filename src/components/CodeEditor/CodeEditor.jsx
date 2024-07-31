@@ -36,7 +36,6 @@ const CodeEditor = () => {
 
   async function compile() {
     const sourceCode = userCode;
-    console.log(userInput);
     try {
       const { run: result } = await executeCode(sourceCode, userInput);
       setUserOutput(result.output);

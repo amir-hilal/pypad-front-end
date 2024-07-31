@@ -11,9 +11,11 @@ import SearchPage from './pages/SearchPage';
 import Signup from './pages/Signup';
 import VerifyEmailPage from './pages/VerifyEmailPage';
 import WorkspacePage from './pages/WorkSpacePage';
+import FriendsPage from './pages/FriendsPage';
+import AdminDashboardPage from './pages/AdminDashboardPage'; // Import the Admin Dashboard Page
 import PrivateRoute from './utils/PrivateRoute';
 import GuestRoute from './utils/GuestRoute';
-import FriendsPage from './pages/FriendsPage';
+import AdminRoute from './utils/AdminRoute'; // Import the AdminRoute component
 
 function App() {
   return (
@@ -24,7 +26,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<GuestRoute element={LoginPage} />} />
-            <Route path="/signup" element={<GuestRoute element={Signup}  />} />
+            <Route path="/signup" element={<GuestRoute element={Signup} />} />
             <Route path="/verify" element={<GuestRoute element={VerifyEmailPage} />} />
 
             {/* Protected Routes */}
@@ -33,6 +35,7 @@ function App() {
             <Route path="/friends" element={<PrivateRoute element={FriendsPage} />} />
             <Route path="/profile" element={<PrivateRoute element={ProfilePage} />} />
             <Route path="/workspace" element={<PrivateRoute element={WorkspacePage} />} />
+            <Route path="/admin" element={<AdminRoute element={AdminDashboardPage} />} /> {/* Admin Route */}
 
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
