@@ -49,8 +49,8 @@ function Profile() {
       console.log(request);
       if (newFileName) {
         const newFile = {
-          id: files.length + 1, 
-          name: newFileName
+          id: files.length + 1,
+          filename: newFileName
         };
         setFiles([...files, newFile]);
         setNewFileName('');
@@ -58,6 +58,7 @@ function Profile() {
       }
     } catch (error) {
       console.log(error);
+      errorRef.current.innerHTML = error.response.data.message;
     }
   };
 

@@ -43,7 +43,7 @@ export const getCode = async (id) => {
 };
 
 export const getAllCode = async () => {
-  const { data } = await axiosInstance.get(`/codes/`);
+  const { data } = await axiosInstance.get(`/codes`);
   return data;
 };
 
