@@ -10,9 +10,8 @@ function UserList() {
   useEffect(() => {
     const getUsers = async()=>{
         const usersList = await getAllUsers();
-        console.log(usersList.data);
         setUsers(usersList.data)
-    }   
+    }
     getUsers()
   }, []);
 
@@ -55,6 +54,7 @@ function UserList() {
     reader.onload = (event) => {
       const fileContent = event.target.result;
       if (file.type.includes('excel') || file.type.includes('spreadsheet')) {
+        console.log('before')
         const workbook = XLSX.read(fileContent, { type: 'binary' });
         const sheetName = workbook.SheetNames[0];
         const worksheet = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
@@ -84,7 +84,7 @@ function UserList() {
 
 
   return (
-    <div className="dashboard-container">
+    <div className="dashboard-container min-h-75">
     <h1>Import Users</h1>
       <input type="file" accept=".csv, .xlsx" onChange={handleFileChange} />
       <button onClick={handleFileUpload}>Upload</button>

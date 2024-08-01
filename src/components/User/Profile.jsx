@@ -68,7 +68,7 @@ function Profile() {
   };
 
   return (
-    <div className="container">
+    <div className="container min-h-75">
       <h1>Profile Page</h1>
       <h2>Your Python Files</h2>
       <div className="error" ref={errorRef}></div>
