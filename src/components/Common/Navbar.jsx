@@ -16,7 +16,6 @@ const Navbar = () => {
       if (isLoggedIn && !user) {
         try {
           const response = await axiosInstance.get('/me');
-          console.log(response)
           dispatch(setUser(response.data.data.user));
         } catch (error) {
           console.error('Failed to fetch user:', error);
